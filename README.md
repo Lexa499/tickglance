@@ -171,3 +171,17 @@ disclosed. Timeline of this codebase:
 ## License
 
 MIT — see [LICENSE](LICENSE).
+
+## Feature requests for the platform teams
+
+Written for the Heads Up hackathon's request to name what the APIs we used were missing — all four come from building TickGlance.
+
+**Even Realities / Even Hub SDK**
+
+1. Input event typing is inconsistent: temple clicks arrive as `sysEvent` with `eventType` undefined, while the docs example reads them from `textEvent`. Please guarantee a populated `eventType` on every input event (or correct the docs), so apps do not have to subscribe to both channels defensively.
+2. Scrolling text containers is unreliable in practice. Please provide a supported programmatic scroll API for text containers, or document native list containers as the canonical scrollable-menu pattern.
+3. A documented way to inspect a packed `.ehpk` (for example `evenhub pack --list`) would help builders verify exactly what ships.
+
+**Binance**
+
+4. `api.binance.com` returns HTTP 451 (geo-restriction) even for public market data, while `data-api.binance.vision` serves the same data keyless with CORS enabled. Please document `data-api.binance.vision` as the official endpoint for browser/WebView clients, so embedded apps do not have to discover it by trial and error.
