@@ -1,0 +1,1 @@
+{"dependencies":{"@evenrealities/even_hub_sdk":"^0.0.16"},"devDependencies":{"@evenrealities/evenhub-cli":"^0.2.0","@evenrealities/evenhub-simulator":"^0.9.5","typescript":"~7.0.2","vite":"^8.3.6"},"name":"tickglance","private":true,"scripts":{"build":"tsc && vite build","dev":"vite","preview":"vite preview"},"type":"module","version":"0.2.0"}
