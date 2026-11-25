@@ -6,6 +6,8 @@ Your crypto watchlist and price alerts on your Even G2 glasses. Glance at
 live Binance prices and **set, clear, and receive price alerts with temple
 taps — in seconds, without touching your phone.**
 
+**▶ Play it live in your browser:** https://tickglance.vercel.app/live.html — **Demo page:** https://tickglance.vercel.app/demo.html
+
 - Editable watchlist with live price and 24h change, formatted for the
   576×288 monochrome G2 display. It defaults to BTC / ETH / SOL, and a
   **Manage coins** screen (one extra scroll stop under the watchlist) lets
