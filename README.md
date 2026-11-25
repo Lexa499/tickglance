@@ -13,10 +13,17 @@ taps — in seconds, without touching your phone.**
   ADA, LINK — in or out with temple taps. The watchlist persists across
   restarts (WebView local storage); removing a coin also disarms its alert.
 - Per-coin detail: price, 24h change, 24h high/low.
-- **Read-and-write, not just notify:** arm an alert (+1 %, −1 %, or a ±0.25 %
-  move alert) from the glasses in two taps; clear it just as fast; edit the
-  watchlist from the glasses too; when a refresh sees the price cross, the
-  glasses switch to a full-screen alert.
+- **Read-and-write, not just notify:** arm an alert (+1 %, −1 %, a ±0.25 %
+  move alert, or a **level alert**) from the glasses in two taps; clear it
+  just as fast; edit the watchlist from the glasses too; when a refresh
+  sees the price cross, the glasses switch to a full-screen alert.
+- **Level alerts (new in v0.3.0, 2026-11-26):** traders think in round
+  price levels — "BTC at 60k" — more than in percents. One tap arms an
+  alert on the next round-number boundary above *and* below the current
+  price (BTC steps of $1,000, ETH $100, SOL $10, DOGE $0.01 — the step is
+  one order of magnitude below the price's leading digit). Added after
+  organizer feedback during build week; the detail screen shows the armed
+  band, e.g. `LVL $59,000 - $60,000`.
 - Alerts persist across restarts (WebView local storage).
 - Read-only public data. **No API keys, no account, no funds, no trading —
   ever.** Alerts are in-app display state; they place no orders.
@@ -30,6 +37,10 @@ taps — in seconds, without touching your phone.**
 | Manage coins | Alert fired — captured live, 23 Nov 2026 |
 |---|---|
 | ![Manage coins](docs/screenshots/manage-coins.png) | ![Alert fired](docs/screenshots/alert-fired.png) |
+
+| Level alert armed (v0.3.0) | Watchlist with the alert armed |
+|---|---|
+| ![Level alert](docs/screenshots/level-alert.png) | ![Level alert on watchlist](docs/screenshots/level-alert-watch.png) |
 
 The alert screenshot is a real firing, not a mock-up: a ±0.25 % move alert
 armed on ETH at $1,728.55 fired on a live refresh at $1,724.09 (−0.258 %),
@@ -57,13 +68,14 @@ npm run build
 npx evenhub pack app.json dist -o tickglance.ehpk
 ```
 
-The packaged build submitted with this entry is `tickglance.ehpk`
-(40,331 bytes, SHA-256
-`300130f1e638655b821cfbbec175fbf57a948cabf2541c2321f082bdc1734788`),
-attached to the hackathon submission form; it is not tracked in git
-(rebuild it with the commands above — the packer is deterministic).
+The packaged build for this entry (v0.3.0) is `tickglance.ehpk`
+(40,548 bytes, SHA-256
+`e1fee2d08cf3a30fc67638253d760e70a421f5f9088398122f78efb15e300948`);
+it is not tracked in git (rebuild it with the commands above — the packer
+is deterministic, and a re-pack of these exact inputs was verified to
+reproduce it byte-for-byte).
 
-Unit test for the alert logic (12 assertions, no SDK involved):
+Unit test for the alert logic (21 assertions, no SDK involved):
 
 ```bash
 node test/alerts-logic-test.mjs
@@ -100,7 +112,7 @@ tickglance/
 │   │                   (Binance-only fetch, 30 s auto-refresh, stale state),
 │   │                   watchlist editing with local-storage persistence
 │   └── alerts.ts       Pure alert logic (arm / check / label) — unit-tested
-│                       separately from the SDK (12 assertions, all passing)
+│                       separately from the SDK (21 assertions, all passing)
 ├── test/
 │   └── alerts-logic-test.mjs
 └── docs/screenshots/   Simulator captures used above
@@ -160,6 +172,13 @@ disclosed. Timeline of this codebase:
   and the final package were built during build week. The same day, a live
   alert firing and the STALE / NO DATA states were captured in the
   simulator as submission evidence.
+- **2026-11-26 — v0.3.0 (build week).** Level alerts (next round-number
+  boundary above and below the current price) added in response to
+  organizer feedback that traders think in price levels rather than
+  percents; verified end-to-end in the simulator (armed on BTC at
+  $59,081.98 → band $59,000–$60,000) and covered by 9 new unit-test
+  assertions (21 total). The demo video predates this feature and shows
+  v0.2.0; level alerts can be tried in the live browser demo.
 - **Official Even Realities material:** the app structure follows the
   official Even Hub docs (Quickstart / Your First App / Simulator /
   Packaging) and uses the official npm packages listed above.

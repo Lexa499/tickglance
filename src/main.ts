@@ -25,6 +25,12 @@
 //    as `listEvent` carrying `currentSelectItemIndex`. Non-list clicks on
 //    the detail screen are logged and ignored, never guessed.
 //
+// v0.3.0 (2026-11-26): LEVEL alerts, added after organizer feedback that
+// traders think in round price levels ("BTC at 60k") more than percents.
+// One tap arms an alert on the next round-number boundary above and below
+// the current price (step = one order of magnitude below the price's
+// leading digit: BTC $1,000, ETH $100, SOL $10, DOGE $0.01).
+//
 // Day 1 (build week, 2026-11-23): watchlist editing. A "+ Manage coins" row
 // under the watchlist opens a MANAGE screen — again a native LIST container
 // (one row per preset symbol, `[x]`/`[ ]` state in the label) where a tap
@@ -47,6 +53,7 @@ import {
   makeAboveAlert,
   makeBelowAlert,
   makeMoveAlert,
+  makeLevelAlert,
   movePctFromSet,
   alertLabel,
   type PriceAlert,
@@ -251,7 +258,7 @@ function checkAlerts() {
 
 // ---------------------------------------------------------------- rendering
 
-const ACTIONS = ['Set alert +1%', 'Set alert -1%', 'Set move alert', 'Clear alert', 'Back'] as const
+const ACTIONS = ['Set alert +1%', 'Set alert -1%', 'Set move alert', 'Set level alert', 'Clear alert', 'Back'] as const
 
 function selectedCoin(): CoinPrice | undefined {
   return prices[watchCursor]
@@ -565,6 +572,13 @@ function executeActionAt(index: number) {
       alerts[p.base] = a
       saveAlerts()
       console.log(`[tickglance] alert set ${p.base} move ±${ALERT_MOVE_PCT}% from ${a.setPrice}`)
+      break
+    }
+    case 'Set level alert': {
+      const a = makeLevelAlert(p.base, p.price, now)
+      alerts[p.base] = a
+      saveAlerts()
+      console.log(`[tickglance] alert set ${p.base} level ${a.levelDown} - ${a.threshold} from ${a.setPrice}`)
       break
     }
     case 'Clear alert': {
